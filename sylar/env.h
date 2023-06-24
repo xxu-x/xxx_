@@ -1,0 +1,52 @@
+#ifndef __SYLAR_ENV_H__
+#define __SYLAR_ENV_H__
+
+#include "singleton.h"
+#include "thread.h"
+#include <map>
+#include <vector>
+
+namespace sylar {
+
+/// @brief 参数解析
+class Env {
+public:
+    typedef RWMutex RWMutexType;
+    bool init(int argc, char** argv);
+
+    void add(const std::string& key, const std::string& val);
+    bool has(const std::string& key);
+    void del(const std::string& key);
+    std::string get(const std::string& key, const std::string& default_value = "");
+
+    void addHelp(const std::string& key, const std::string& desc);
+    void removeHelp(const std::string& key);
+    void printHelp();
+
+    const std::string& getExe() const { return m_exe;}
+    const std::string& getCwd() const { return m_cwd;}
+
+    bool setEnv(const std::string& key, const std::string& val);
+    std::string getEnv(const std::string& key, const std::string& default_value = "");
+
+    std::string getAbsolutePath(const std::string& path) const;
+    std::string getAbsoluteWorkPath(const std::string& path) const;
+    std::string getConfigPath();
+private:
+    RWMutexType m_mutex;
+    std::map<std::string, std::string> m_args;
+    /// 记录参数的输入
+    std::vector<std::pair<std::string, std::string> > m_helps;
+    /// 当前应用名称
+    std::string m_program;
+    /// 程序执行的绝对路径
+    std::string m_exe;
+    /// 可执行文件的路径
+    std::string m_cwd;
+};
+
+typedef sylar::Singleton<Env> EnvMgr;
+
+}
+
+#endif
