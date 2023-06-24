@@ -1,2 +1,0 @@
-2023-06-22 17:28:48	LoadConfFile file=/mnt/e/sylar_Project/bin/conf/log2.yml ok
-2023-06-22 17:28:48	LoadConfFile file=/mnt/e/sylar_Project/bin/conf/server.yml ok
